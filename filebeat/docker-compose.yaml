@@ -1,0 +1,15 @@
+version: "3"
+services:
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:${ELASTIC_VERSION}
+    command: --strict.perms=false -e
+    user: root
+    restart: on-failure
+    environment:
+      SVC: ${SVC}
+      ES_SERVER: ${ES_SERVER}
+    volumes:
+      - ${LOG_PATH}/:/usr/share/filebeat/logs:ro
+      - ./config/filebeat.yml:/usr/share/filebeat/filebeat.yml:r
+      - ./config/policy.json:/usr/share/filebeat/policy.json
+      - ./config/template.json:/usr/share/filebeat/template.json

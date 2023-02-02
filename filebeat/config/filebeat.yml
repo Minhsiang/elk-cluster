@@ -1,0 +1,61 @@
+filebeat.config.inputs:
+  enabled: false
+  path: inputs.d/*.yml
+
+filebeat.config.modules:
+  enabled: false
+  path: ${path.config}/modules.d/*.yml
+
+filebeat.registry.flush: 5s
+
+clean_inactive: 1m
+prospector.scanner.check_interval: 10s
+
+queue.mem:
+  events: 2048
+  flush.min_events: 1024
+  flush.timeout: 5s
+
+timestamp.precision: nanosecond
+
+filebeat.inputs:
+- type: filestream
+  id: ${SVC}-filestream-id
+  enabled: true
+  paths:
+    - /usr/share/filebeat/logs/*.log
+  fields:
+    log_type: ${SVC}
+  fields_under_root: true
+  parsers:
+    - ndjson:
+        target: ""
+        add_error_key: true
+        overwrite_keys: true
+
+setup.ilm.enabled: true
+setup.ilm.rollover_alias: "${SVC}"
+setup.ilm.policy_name: "${SVC}-policy"
+setup.ilm.overwrite: false
+
+setup.template.settings:
+  index.number_of_shards: 3
+  index.number_of_replicas: 0
+
+setup.template.name: "${SVC}"
+setup.template.pattern: "${SVC}-*"
+
+setup.template.json.enabled: true
+setup.template.json.path: "template.json"
+setup.template.json.name: "${SVC}"
+setup.template.json.data_stream: true
+
+output.elasticsearch:
+  hosts: [ "${ES_SERVER}" ]
+  index: "${SVC}"
+  bulk_max_size: 1024
+  worker: 2
+  compression_level: 9
+
+logging.json: true
+logging.level: error
