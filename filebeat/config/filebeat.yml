@@ -21,11 +21,8 @@ timestamp.precision: nanosecond
 filebeat.inputs:
 - type: filestream
   id: ${SVC}-filestream-id
-  enabled: true
   paths:
     - /usr/share/filebeat/logs/*.log
-  fields:
-    log_type: ${SVC}
   fields_under_root: true
   parsers:
     - ndjson:
@@ -34,13 +31,10 @@ filebeat.inputs:
         overwrite_keys: true
 
 setup.ilm.enabled: true
-setup.ilm.rollover_alias: "${SVC}"
 setup.ilm.policy_name: "${SVC}-policy"
+setup.ilm.policy_file: "policy.json"
+setup.ilm.check_exists: true
 setup.ilm.overwrite: false
-
-setup.template.settings:
-  index.number_of_shards: 3
-  index.number_of_replicas: 0
 
 setup.template.name: "${SVC}"
 setup.template.pattern: "${SVC}-*"

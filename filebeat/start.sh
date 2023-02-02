@@ -1,3 +1,3 @@
 ./gen_template.sh
 
-docker-compose up
+docker-compose up -d
