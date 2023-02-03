@@ -1,6 +1,6 @@
 {
     "index_patterns": [
-        "test2log*"
+        "B2BServer*"
     ],
     "data_stream": {},
     "priority": 500,
@@ -14,7 +14,7 @@
             "index.translog.durability": "async",
             "index.translog.flush_threshold_size": "512mb",
             "index.routing.allocation.total_shards_per_node": 1,
-            "index.lifecycle.name": "test2log-policy"
+            "index.lifecycle.name": "B2BServer-policy"
         },
         "mappings": {
             "properties": {

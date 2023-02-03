@@ -10,6 +10,6 @@ services:
       ES_SERVER: ${ES_SERVER}
     volumes:
       - ${LOG_PATH}/:/usr/share/filebeat/logs:ro
-      - ./config/filebeat.yml:/usr/share/filebeat/filebeat.yml:r
+      - ./config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - ./config/policy.json:/usr/share/filebeat/policy.json
       - ./config/template.json:/usr/share/filebeat/template.json
